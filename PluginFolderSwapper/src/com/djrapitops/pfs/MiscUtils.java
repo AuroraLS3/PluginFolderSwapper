@@ -12,7 +12,7 @@ public class MiscUtils {
         String[] cVersion;
         String lineWithVersion;
         try {
-            URL githubUrl = new URL("");
+            URL githubUrl = new URL("https://raw.githubusercontent.com/Rsl1122/PluginFolderSwapper/master/PluginFolderSwapper/src/plugin.yml");
             lineWithVersion = "";
             Scanner websiteScanner = new Scanner(githubUrl.openStream());
             while (websiteScanner.hasNextLine()) {
@@ -28,7 +28,7 @@ public class MiscUtils {
             cVersion = plugin.getDescription().getVersion().split("\\.");
             double currentVersionNumber = Double.parseDouble(cVersion[0] + "." + cVersion[1] + cVersion[2]);
             if (newestVersionNumber > currentVersionNumber) {
-                return "New Version (" + versionString + ") is availible on spigot";
+                return "New Version (" + versionString + ") is availible at https://www.spigotmc.org/resources/authors/rsl1122.122894/";
             } else {
                 return "You're running the latest version";
             }

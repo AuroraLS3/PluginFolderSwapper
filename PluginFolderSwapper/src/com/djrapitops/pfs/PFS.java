@@ -50,9 +50,7 @@ public class PFS extends JavaPlugin {
     @Override
     public void onDisable() {
         if (!enabledPlugins.isEmpty()) {
-            log("Disabling plugins..");
             unloadPlugins();
-            log("Plugins disabled.");
         }
         log("Plugin Folder Swapper disabled.");
     }
