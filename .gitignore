@@ -45,3 +45,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+/PluginFolderSwapper/nbproject/private/
+/PluginFolderSwapper/dist/
+/PluginFolderSwapper/build/
