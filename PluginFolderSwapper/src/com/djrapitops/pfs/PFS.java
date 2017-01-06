@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PFS extends JavaPlugin {
 
     private Set<Plugin> enabledPlugins;
+    private API api;
 
     @Override
     public void onEnable() {
@@ -37,20 +38,22 @@ public class PFS extends JavaPlugin {
 
         log(MiscUtils.checkVersion());
         log("Plugin Folder Swapper enabled.");
-        log("Loading plugins..");
+        log("-- Loading plugins.. --");
         loadPlugins();
         if (enabledPlugins.isEmpty()) {
             logError("No Plugins were loaded (is config set-up correctly?) Disabling plugin..");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        log("Plugins loaded.");
+        enablePlugins();
+        api = new API(this);
+        log("-- Plugins loaded. --");
     }
 
     @Override
     public void onDisable() {
         if (!enabledPlugins.isEmpty()) {
-            unloadPlugins();
+            disablePlugins();
         }
         log("Plugin Folder Swapper disabled.");
     }
@@ -63,30 +66,72 @@ public class PFS extends JavaPlugin {
         getLogger().severe(message);
     }
 
-    private void loadPlugins() {
+    void loadPlugins() {
         List<String> pluginList = getConfig().getStringList("PluginPaths");
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         for (String filePath : pluginList) {
             if (filePath.equals("C:/ExamplePath/ExamplePlugin-1.0.jar")) {
                 continue;
             }
-            try {
+            if (filePath.contains(".jar")) {
                 File pluginJar = new File(filePath);
-                Plugin plugin = pluginManager.loadPlugin(pluginJar);
-                if (plugin != null) {
-                    enabledPlugins.add(plugin);
-                    pluginManager.enablePlugin(plugin);
+                loadPluginFromFile(pluginManager, pluginJar);
+            } else {
+                File folder = new File(filePath);
+                File[] listOfFiles = folder.listFiles();
+
+                for (File pluginFile : listOfFiles) {
+                    if (pluginFile.isFile()) {
+                        loadPluginFromFile(pluginManager, pluginFile);
+                    }
                 }
-            } catch (InvalidPluginException | InvalidDescriptionException | UnknownDependencyException ex) {
-                Logger.getLogger(PFS.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    private void unloadPlugins() {
+    private void loadPluginFromFile(PluginManager pluginManager, File pluginJar) {
+        try {
+            Plugin plugin = pluginManager.loadPlugin(pluginJar);
+            if (plugin != null) {
+                enabledPlugins.add(plugin);
+            }
+        } catch (InvalidPluginException | InvalidDescriptionException | UnknownDependencyException ex) {
+            Logger.getLogger(PFS.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void loadPluginFromFile(File pluginJar) {
+        loadPluginFromFile(Bukkit.getServer().getPluginManager(), pluginJar);
+    }
+
+    void enablePlugins() {
+        PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+        for (Plugin plugin : enabledPlugins) {            
+            pluginManager.enablePlugin(plugin);
+        }
+    }
+
+    void disablePlugins() {
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         for (Plugin plugin : enabledPlugins) {
             pluginManager.disablePlugin(plugin);
         }
+    }
+
+    void disablePlugin(Plugin plugin) {
+        Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+    }
+
+    void enablePlugin(Plugin plugin) {
+        Bukkit.getServer().getPluginManager().enablePlugin(plugin);
+        enabledPlugins.add(plugin);
+    }
+
+    public API getApi() {
+        return api;
+    }
+
+    void removePlugin(Plugin plugin) {
+        enabledPlugins.remove(plugin);
     }
 }
