@@ -28,7 +28,7 @@ public class MiscUtils {
             cVersion = plugin.getDescription().getVersion().split("\\.");
             double currentVersionNumber = Double.parseDouble(cVersion[0] + "." + cVersion[1] + cVersion[2]);
             if (newestVersionNumber > currentVersionNumber) {
-                return "New Version (" + versionString + ") is availible at https://www.spigotmc.org/resources/authors/rsl1122.122894/";
+                return "New Version (" + versionString + ") is availible at https://www.spigotmc.org/resources/pfs-plugin-folder-swapper.34336/";
             } else {
                 return "You're running the latest version";
             }

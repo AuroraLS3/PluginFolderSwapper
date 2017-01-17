@@ -30,7 +30,7 @@ public class PFS extends JavaPlugin {
         getConfig().options().copyDefaults(true);
 
         getConfig().options().header("PFS | Plugin Folder Swapper - Config\n"
-                + "PluginPaths - Exact filepath to the plugins"
+                + "PluginPaths - Exact filepath to the plugins, can use %serverfolder%/blabla.. if can't see excact path."
         );
 
         saveConfig();
@@ -70,16 +70,20 @@ public class PFS extends JavaPlugin {
         List<String> pluginList = getConfig().getStringList("PluginPaths");
         PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         for (String filePath : pluginList) {
-            if (filePath.equals("C:/ExamplePath/ExamplePlugin-1.0.jar")) {
+            String fP = filePath.replaceAll("%serverfolder%/", new File(".").getAbsolutePath());
+            if (fP.equals("C:/ExamplePath/ExamplePlugin-1.0.jar")) {
                 continue;
             }
-            if (filePath.contains(".jar")) {
-                File pluginJar = new File(filePath);
+            if (fP.contains(".jar")) {
+                File pluginJar = new File(fP);
                 loadPluginFromFile(pluginManager, pluginJar);
             } else {
-                File folder = new File(filePath);
+                File folder = new File(fP);
                 File[] listOfFiles = folder.listFiles();
-
+                if (listOfFiles.length == 0) {
+                    logError("Incorrect/Empty/Non-Existent folder in config: "+filePath);
+                    continue;
+                }
                 for (File pluginFile : listOfFiles) {
                     if (pluginFile.isFile()) {
                         loadPluginFromFile(pluginManager, pluginFile);
