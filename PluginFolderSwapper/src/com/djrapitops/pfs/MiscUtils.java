@@ -2,6 +2,7 @@ package com.djrapitops.pfs;
 
 import java.net.URL;
 import java.util.Scanner;
+
 import static org.bukkit.plugin.java.JavaPlugin.getPlugin;
 
 public class MiscUtils {
@@ -33,7 +34,7 @@ public class MiscUtils {
                 return "You're running the latest version";
             }
         } catch (Exception e) {
-            plugin.logError("Failed to compare versions.\n"+e);
+            plugin.logError("Failed to compare versions.\n" + e);
         }
         return "Failed to get newest version number.";
     }
