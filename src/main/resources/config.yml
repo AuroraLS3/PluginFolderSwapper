@@ -1,2 +1,3 @@
+Check_for_updates: true
 PluginPaths:
     - 'C:/ExamplePath/ExamplePlugin-1.0.jar'

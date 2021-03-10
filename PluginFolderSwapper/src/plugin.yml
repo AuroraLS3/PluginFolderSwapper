@@ -1,4 +1,0 @@
-name: PFS
-main: com.djrapitops.pfs.PFS
-version: 1.2.0
-load: startup

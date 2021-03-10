@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+ext.paperVersion = "1.16.5-R0.1-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+    maven { // Spigot Repository
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven { // Paper Repository
+        url = "https://papermc.io/repo/repository/maven-public/"
+    }
+}
+
+dependencies {
+    compileOnly "com.destroystokyo.paper:paper-api:$paperVersion"
+}
