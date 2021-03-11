@@ -5,6 +5,7 @@ import org.bukkit.plugin.*;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -113,9 +114,9 @@ public class Loader {
 
             Path filePath;
             if (path.contains("%serverfolder%")) {
-                filePath = Path.of(serverFolderPath).resolve(path.replace("%serverfolder%/", ""));
+                filePath = Paths.get(serverFolderPath).resolve(path.replace("%serverfolder%/", ""));
             } else {
-                filePath = Path.of(path);
+                filePath = Paths.get(path);
             }
 
             if (filePath.endsWith(".jar")) {
