@@ -28,7 +28,8 @@ public class Loader {
         pluginLoader = pfs.getPluginLoader();
         pluginManager = pfs.getServer().getPluginManager();
 
-        serverFolderPath = pfs.getDataFolder().getParentFile().getParentFile().getAbsolutePath();
+        serverFolderPath = new File("").getAbsolutePath();
+        logger.info("Server folder found at: " + serverFolderPath);
 
         loadedPlugins = new ArrayList<>();
         loadedPluginNames = Arrays.stream(pluginManager.getPlugins())
