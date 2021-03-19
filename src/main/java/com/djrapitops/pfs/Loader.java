@@ -120,7 +120,7 @@ public class Loader {
                 filePath = Paths.get(path);
             }
 
-            if (filePath.endsWith(".jar")) {
+            if (isJar(filePath.toFile())) {
                 files.add(filePath.toFile());
             } else {
                 findPluginsFromFolder(files, path, filePath);
@@ -128,6 +128,10 @@ public class Loader {
         }
 
         return files;
+    }
+
+    private boolean isJar(File file) {
+        return file.isFile() && file.getName().endsWith(".jar");
     }
 
     private void findPluginsFromFolder(Set<File> files, String path, Path filePath) {
@@ -141,7 +145,7 @@ public class Loader {
         }
 
         for (File pluginFile : listOfFiles) {
-            if (pluginFile.isFile() && pluginFile.getName().contains(".jar")) {
+            if (isJar(pluginFile)) {
                 files.add(pluginFile);
             }
         }
