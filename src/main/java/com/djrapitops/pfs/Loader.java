@@ -18,6 +18,7 @@ public class Loader {
     private final FileConfiguration config;
 
     private final List<String> loadedPluginNames;
+    private final List<String> pluginNamesLoadedByPfs;
     private final List<Plugin> loadedPlugins;
     private final String serverFolderPath;
     private Map<File, String> pluginNames;
@@ -35,7 +36,7 @@ public class Loader {
         loadedPluginNames = Arrays.stream(pluginManager.getPlugins())
                 .map(Plugin::getName)
                 .collect(Collectors.toList());
-
+        pluginNamesLoadedByPfs = new ArrayList<>();
     }
 
     public List<String> loadPlugins() {
@@ -50,7 +51,8 @@ public class Loader {
 
     private List<String> loadPlugins(List<File> files) {
         for (File file : files) {
-            if (!loadedPluginNames.contains(pluginNames.get(file))) continue;
+            String pluginName = pluginNames.get(file);
+            if (loadedPluginNames.contains(pluginName)) continue;
             tryToLoadFromFile(file);
         }
 
@@ -60,7 +62,7 @@ public class Loader {
             }
         }
 
-        return loadedPluginNames;
+        return pluginNamesLoadedByPfs;
     }
 
     private void tryToLoadFromFile(File file) {
@@ -78,6 +80,7 @@ public class Loader {
                 loadedPlugins.add(plugin);
                 String pluginName = plugin.getName();
                 loadedPluginNames.add(pluginName);
+                pluginNamesLoadedByPfs.add(pluginName);
                 pluginNames.put(pluginJar, pluginName);
             }
         } catch (UnknownDependencyException e) {

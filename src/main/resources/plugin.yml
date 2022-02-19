@@ -1,5 +1,5 @@
 name: PFS
 main: com.djrapitops.pfs.PFS
-version: 1.3.3
+version: 1.3.4
 api-version: 1.13
 load: STARTUP
